@@ -7,16 +7,16 @@ public class DatabaseHandler extends Configs{
     Connection connection;
 
     public Connection getConnection() throws ClassNotFoundException, SQLException {
-        String url = "jdbc:musql://" + dbHost + ":" + dbPort + "/" + dbName
+        String url = "jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName
                 + "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 
-        Class.forName("com.mysql.jdbc.Driver");
+        Class.forName("com.mysql.cj.jdbc.Driver");
 
         connection = DriverManager.getConnection(url, dbUser, dbPassword);
         return connection;
     }
 
-    public void insert(Note note){
+    public void insertNote(Note note){
 
         String insert = "INSERT INTO " + TableProperty.TABLE_NAME + "("
                 + TableProperty.VALUE + ","
@@ -24,7 +24,7 @@ public class DatabaseHandler extends Configs{
                 + TableProperty.CATEGORY + ","
                 + TableProperty.TYPE + ","
                 + TableProperty.DESCRIPTION + ")"
-                + "VALUES (?,?,?,?,?,?)";
+                + "VALUES (?,?,?,?,?)";
 
         try {
 
