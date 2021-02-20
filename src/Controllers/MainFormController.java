@@ -1,21 +1,20 @@
 package Controllers;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import Database.DatabaseHandler;
 import Database.Note;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 
 public class MainFormController {
 
     @FXML
-    private ResourceBundle resources;
+    private AnchorPane AnchorPane1;
 
     @FXML
-    private URL location;
+    private Button openMenu_button;
 
     @FXML
     private TextField value_textField;
@@ -36,7 +35,20 @@ public class MainFormController {
     private Button addNote_button;
 
     @FXML
+    private AnchorPane AnchorPane2;
+
+    @FXML
+    private VBox menu_VBox;
+
+    @FXML
     void initialize() {
+
+        AnchorPane1.getChildren().removeAll(AnchorPane2);
+
+        openMenu_button.setOnAction(actionEvent -> {
+            if(!AnchorPane1.getChildren().removeAll(AnchorPane2))
+                AnchorPane1.getChildren().add(AnchorPane2);
+        });
 
         addNote_button.setOnAction(actionEvent -> {
             Note note = new Note(value_textField.getText(), date_textField.getText(), account_textField.getText(),
