@@ -2,11 +2,15 @@ package Controllers;
 
 import Database.DatabaseHandler;
 import Database.Note;
+import Database.TableProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+
+import java.sql.SQLException;
 
 public class MainFormController {
 
@@ -32,6 +36,21 @@ public class MainFormController {
     private TextField category_textField;
 
     @FXML
+    private Label value_label;
+
+    @FXML
+    private Label date_label;
+
+    @FXML
+    private Label type_label;
+
+    @FXML
+    private Label category_label;
+
+    @FXML
+    private Label description_label;
+
+    @FXML
     private Button addNote_button;
 
     @FXML
@@ -40,10 +59,12 @@ public class MainFormController {
     @FXML
     private VBox menu_VBox;
 
+    DatabaseHandler databaseHandler = new DatabaseHandler();
+
     @FXML
     void initialize() {
 
-        AnchorPane1.getChildren().removeAll(AnchorPane2);
+        doAtFirst();
 
         openMenu_button.setOnAction(actionEvent -> {
             if(!AnchorPane1.getChildren().removeAll(AnchorPane2))
@@ -56,6 +77,25 @@ public class MainFormController {
             DatabaseHandler databaseHandler = new DatabaseHandler();
             databaseHandler.insertNote(note);
         });
+    }
+
+    void doAtFirst()  {
+
+        AnchorPane1.getChildren().removeAll(AnchorPane2);
+
+        try{
+
+            while(databaseHandler.select().next()){
+                value_label.setText(databaseHandler.select().getString(TableProperty.VALUE));
+                date_label.setText(databaseHandler.select().getString(TableProperty.DATE));
+                category_label.setText(databaseHandler.select().getString(TableProperty.CATEGORY));
+                type_label.setText(databaseHandler.select().getString(TableProperty.TYPE));
+                description_label.setText(databaseHandler.select().getString(TableProperty.DESCRIPTION));
+            }
+
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
 
