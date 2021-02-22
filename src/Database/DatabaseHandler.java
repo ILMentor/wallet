@@ -41,19 +41,4 @@ public class DatabaseHandler extends Configs{
             throwables.printStackTrace();
         }
     }
-    ResultSet resultSet;
-    public ResultSet select(){
-
-        //todo Я не уверен, что этот метод будет работать правильно.
-        // Когда буду доставать данные из базы, его нужно проверить.
-        String select = "SELECT * FROM " + TableProperty.TABLE_NAME;
-        try {
-            Statement statement = getConnection().createStatement();
-            resultSet = statement.executeQuery(select);
-        } catch (SQLException | ClassNotFoundException throwables) {
-            throwables.printStackTrace();
-        }
-
-        return resultSet;
-    }
 }

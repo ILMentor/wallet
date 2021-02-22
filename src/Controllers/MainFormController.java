@@ -10,7 +10,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class MainFormController {
 
@@ -74,7 +76,6 @@ public class MainFormController {
         addNote_button.setOnAction(actionEvent -> {
             Note note = new Note(value_textField.getText(), date_textField.getText(), account_textField.getText(),
                     type_textField.getText(), category_textField.getText());
-            DatabaseHandler databaseHandler = new DatabaseHandler();
             databaseHandler.insertNote(note);
         });
     }
@@ -84,16 +85,18 @@ public class MainFormController {
         AnchorPane1.getChildren().removeAll(AnchorPane2);
 
         try{
-
-            while(databaseHandler.select().next()){
-                value_label.setText(databaseHandler.select().getString(TableProperty.VALUE));
-                date_label.setText(databaseHandler.select().getString(TableProperty.DATE));
-                category_label.setText(databaseHandler.select().getString(TableProperty.CATEGORY));
-                type_label.setText(databaseHandler.select().getString(TableProperty.TYPE));
-                description_label.setText(databaseHandler.select().getString(TableProperty.DESCRIPTION));
+            String select = "SELECT * FROM " + TableProperty.TABLE_NAME;
+            Statement statement = databaseHandler.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery(select);
+            while(resultSet.next()){
+                value_label.setText(resultSet.getString(TableProperty.VALUE));
+                date_label.setText(resultSet.getString(TableProperty.DATE));
+                category_label.setText(resultSet.getString(TableProperty.CATEGORY));
+                type_label.setText(resultSet.getString(TableProperty.TYPE));
+                description_label.setText(resultSet.getString(TableProperty.DESCRIPTION));
             }
 
-        } catch(SQLException e) {
+        } catch(SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
